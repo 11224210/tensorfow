@@ -23,12 +23,21 @@
    (3) TF-Slim (針對新版 TF 進行相容性修補)
 
 
-
 二、模型架構
 1. 基礎模型 (Base Model)：SSD MobileNet V2 320x320 (COCO17 TPU-8)
 2. 資料集格式：PASCAL VOC XML ➔ CSV ➔ TensorFlow TFRecord
 3. 模型輸出格式：TensorFlow SavedModel (saved_model.pb 與 variables/)
-📸 專案成果展示與圖片放置指引 (Image Placement Guide)💡 提示： 建議在專案目錄下建立一個 images/ 或 docs/ 資料夾來存放截圖，並在報告對應位置插入圖片：圖 1：LabelImg 資料標註畫面放置位置： 建議放在第二階段「資料集準備」下方。建議圖片： 你們用 LabelImg 框選蘋果、右側顯示 apple 標籤的介面截圖（例如對應你們上傳的 螢幕擷取畫面 2026-10-27 231009.jpg）。   圖 2：Model 訓練過程與 Loss 監控畫面放置位置： 建議放在第四階段「模型訓練」下方。建議圖片： Colab 畫面上顯示 Step 100、Step 200 並帶有 Loss/total_loss 數值的終端機輸出截圖。
+
+### 完整實作步驟說明(Step-by-Step Implementation)
+#### 第一階段：Google Colab 雲端環境建置與依賴安裝
+步驟 1：(1) 確認系統與 GPU 狀態檢查 Python 版本與 Ubuntu 系統版本資訊 (2) 檢查 TensorFlow 版本並確認 GPU（如 Tesla T4）是否成功掛載   
+步驟 2：下載 TensorFlow Official Models 與編譯 Protobuf複製官方 TensorFlow Models 專案庫 
+
+`!git clone [https://github.com/tensorflow/models.git]`
+
+`(https://github.com/tensorflow/models.git)`   
+
+切換至 /content/models/research/ 目錄並執行 Protobuf 編譯。   設定系統的 PYTHONPATH 環境變數以載入對應的模組路徑。   步驟 3：安裝 Object Detection API 套件複製 setup.py 並執行安裝指令。   針對新版環境移除 tensorflow_io 依賴限制以避免報錯。   第二階段：資料集準備與標註步驟 4：本機端前置作業與工具部署（照片 4 放置處）放置照片：4.png詳細說明： 請將此張照片放在「工具安裝」的段落旁。圖說對應： 圖 4：為進行本機端的資料標註前置作業，於 Windows 環境下透過 pip 完成 LabelImg 標註工具及其 GUI 介面依賴套件之部署。   步驟 5：執行 LabelImg 批次載入（照片 2 放置處）放置照片：2.png詳細說明： 請將此張照片放在「資料集前處理」的段落旁。圖說對應： 圖 2：在資料蒐集與前處理階段，於本機端執行 LabelImg 工具進行圖片路徑與標註檔的對應載入紀錄。步驟 6：目標物件標註實作（照片 3 放置處）放置照片：3.jpg詳細說明： 請將此張照片放在「圖片標註說明」的段落旁。圖說對應： 圖 3：本專題針對每張訓練圖片中的目標物件進行手動邊界框（Bounding Box）標註，建立高精確度的標籤（apple），作為監督式學習依據。   步驟 7：專案檔案結構建置（照片 1 放置處）放置照片：1.png詳細說明： 請將此張照片放在「資料集打包與目錄結構」的段落旁。圖說對應： 圖 1：本專案之資料集與目錄結構採用標準 PASCAL VOC 格式設計，資料與標籤分別獨立管理於 images/ 與 data/ 資料夾中，以利後續 TFRecord 的順利打包與轉換。   步驟 8：生成 TFRecord 檔案執行轉換程式，將 XML 標註與影像打包為訓練集 (train.record) 與測試集 (test.record)。   第三階段：下載預訓練模型與系統相容性修補步驟 9：下載 SSD MobileNet V2 預訓練模型使用 wget 下載 ssd_mobilenet_v2_320x320_coco17_tpu-8 模型並進行解壓縮。   步驟 10：解決新版 Python/TensorFlow 相容性衝突（重要修補）針對 estimator 載入錯誤進行模組替換。   建立空殼的 tensorflow_io 模組以繞過版本檢查。   修補 tf_slim 底層中過時的 control_flow_ops.case 與 control_flow_ops.cond 指令，改為指向 tensorflow.compat.v1。   第四階段：模型訓練與匯出步驟 11：執行模型訓練設定環境變數 TF_USE_LEGACY_KERAS=1，並執行 model_main_tf2.py 開始訓練。   監控 Loss 數值，待穩定迭代或至指定步數後手動停止。   步驟 12：匯出推論模型 (Export Inference Graph)執行 exporter_main_v2.py，將訓練好的 Checkpoint 權重匯出為 SavedModel 格式。   步驟 13：打包模型供下載將 exported_model/ 與 object-detection.pbtxt 打包成 my_custom_model.zip 壓縮檔。
 
 ## 第一步:提問
 ![03](https://github.com/11224204lbt/Chatgpt/blob/main/1.png)
