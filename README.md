@@ -109,7 +109,7 @@
 
 (1) 將 `exported_model/` 與 `object-detection.pbtxt` 打包成 `my_custom_model.zip` 壓縮檔。
 
-https://drive.google.com/file/d/1wAsSiyefoUxy1QbGUiDWow_MbpOaApey/view?usp=drive_link
+https://drive.google.com/file/d/1wAsSiyefoUxy1QbGUiDWow_MbpOaApey/view?usp=drive_link  點擊此處可下載打包好的模型壓縮檔
 
 ### ⚠️ 遭遇問題與解決方案 (Troubleshooting & Challenges)
 在本次專題開發與模型訓練過程中，我們遇到了許多由於「環境版本過新」所導致的技術挑戰：
