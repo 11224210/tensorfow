@@ -1,32 +1,34 @@
 # 人工智慧期中報告  11224204林柏廷  11224210賴宣妤
 
 
-## 題目:🍎 基於 TensorFlow 2 視覺物件偵測之水果辨識與定位系統
+## 題目: 基於 TensorFlow 2 視覺物件偵測之水果辨識與定位系統
 
-## 批量水印生成工具 
+### 專題簡介 (Project Introduction)
 
-一個 簡單易用的 Python GUI 工具，用於 批量給圖片添加文字水印。支援 JPG、PNG 和 BMP 格式，並提供字體自訂與半透明效果，非常適合作品保護、品牌宣傳或批量處理圖片。
-此專案由 Python 與 ChatGPT 協作開發，展示了 AI 輔助程式開發的實際應用。
+本專題旨在實作一套端到端（End-to-End）的自定義物件偵測系統。透過收集特定目標影像（以蘋果 apple 為例），利用 LabelImg 進行標註，並在 Google Colab 雲端平台上運用 TensorFlow 2.x Object Detection API 與 SSD MobileNet V2 輕量化神經網路模型進行訓練。
 
-### 功能特色
+本系統克服了新版 Python 3.13 與 TensorFlow 2.20+ 之間的版本相容性與底層套件衝突（如 tf_slim、tensorflow_io 缺失等問題），成功完成模型訓練與推論圖（SavedModel）匯出。最終產出完整可用的 AI 模型權重與配置檔，具備極高的邊緣運算與智慧物聯網（IoT）應用潛力。
 
-批量加水印:
-一次處理資料夾內所有圖片，節省手動加水印的時間。
+### 開發環境與技術架構 (Development Environment)
 
-自動調整字體大小:
-根據圖片寬度自動計算文字大小，最小字體限制為 20，適合各種尺寸圖片。
+本專案運行於雲端運算環境，詳細規格與技術如下：
 
-半透明水印:
-水印文字疊加於圖片上，保持底圖細節清晰。JPG/PNG 都能正確呈現效果。
 
-自選字體:
-支援 .ttf TrueType 字體，使用者可選擇喜歡的字體樣式。
+一、雲端訓練環境 (Google Colab)
+1. 硬體加速 (GPU)：NVIDIA Tesla T4 (15 GB VRAM)
+2. 作業系統：Ubuntu 24.04.4 LTS (Noble Numbat)
+3. 程式語言：Python 3.13
+4. 核心深度學習框架： (1) TensorFlow v2.20.0 / v2.21.0
+   (2) Keras / TF-Keras
+   (3) TF-Slim (針對新版 TF 進行相容性修補)
 
-輸出管理:
-處理後的圖片會自動存放於 output 子資料夾，原始圖片不會被覆蓋。
 
-穩定處理:
-自動忽略損壞或非圖片檔案，避免程式中斷。
+
+二、模型架構
+1. 基礎模型 (Base Model)：SSD MobileNet V2 320x320 (COCO17 TPU-8)
+2. 資料集格式：PASCAL VOC XML ➔ CSV ➔ TensorFlow TFRecord
+3. 模型輸出格式：TensorFlow SavedModel (saved_model.pb 與 variables/)
+📸 專案成果展示與圖片放置指引 (Image Placement Guide)💡 提示： 建議在專案目錄下建立一個 images/ 或 docs/ 資料夾來存放截圖，並在報告對應位置插入圖片：圖 1：LabelImg 資料標註畫面放置位置： 建議放在第二階段「資料集準備」下方。建議圖片： 你們用 LabelImg 框選蘋果、右側顯示 apple 標籤的介面截圖（例如對應你們上傳的 螢幕擷取畫面 2026-10-27 231009.jpg）。   圖 2：Model 訓練過程與 Loss 監控畫面放置位置： 建議放在第四階段「模型訓練」下方。建議圖片： Colab 畫面上顯示 Step 100、Step 200 並帶有 Loss/total_loss 數值的終端機輸出截圖。
 
 ## 第一步:提問
 ![03](https://github.com/11224204lbt/Chatgpt/blob/main/1.png)
